@@ -1,16 +1,20 @@
 package main
 import (
 	"fmt"
+	"sync"
 )
-func sayWord(word string){
-	var i int=1
+func sayWord(word string,grp *sync.WaitGroup){
+	var i int=0
 	for i<5{
 		fmt.Println(word)
 		i++
 	}
+	grp.Done()
 }
 func main(){
-go sayWord("hi")
-go sayWord("how you doin'")
-sayWord("123")
+group1 :=new(sync.WaitGroup)
+go sayWord("1",group1)
+go sayWord("2",group1)
+group1.Add(2)
+group1.Wait()
 }
